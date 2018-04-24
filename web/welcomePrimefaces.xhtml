@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SOBETS - Requerimento Online</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <h:form>
+                <h1>Requerimento Online: Preencha os dados abaixo</h1>
+
+                <p:fieldset legend="Dados Pessoais" style="margin-bottom:20px">
+
+                    <h:panelGrid  columns="2" style="margin-left:20px">
+
+                        <p:inputText placeholder="Nome*" value="#{requerimentoBean.requerente.nomeRequerente}" size="40"/>
+                        <p:inputText placeholder="CPF(Digite apenas números)*" value="#{requerimentoBean.cpf}" size="25" style=" margin-left:35px"/>
+                        <p:inputText placeholder="Documento de Identidade*" value="#{requerimentoBean.requerente.rg}" size="25"/>
+
+                        <h:panelGrid columns="2" style=" margin-left:35px">
+                            <p:inputText placeholder="Telefone*" value="#{requerimentoBean.requerente.telefone}" 
+                                         size="25" />
+                            <p:inputText placeholder="Celular*" value="#{requerimentoBean.requerente.celular}" 
+                                         size="25" />
+                        </h:panelGrid>
+
+                        <p:inputText placeholder="E-mail*" value="#{requerimentoBean.requerente.email}" 
+                                     size="40" />
+                      <!--  <p:inputText placeholder="Digite novamente o seu E-mail*" value="" 
+                                     size="40" style=" margin-left:35px"/>
+-->
+                        <p:inputText placeholder="Pai" value="#{requerimentoBean.requerente.nomePai}" 
+                                     size="40" />
+                        <p:inputText placeholder="Mãe*" value="#{requerimentoBean.requerente.nomeMae}" 
+                                     size="40" style=" margin-left:35px"/>
+                        <p:inputText placeholder="Curso*" value="#{requerimentoBean.requerente.curso}" 
+                                     size="50" />
+                        <p:inputText placeholder="Turma" value="#{requerimentoBean.requerente.turma}" 
+                                     size="20" style=" margin-left:35px"/>
+                    </h:panelGrid>
+
+                </p:fieldset>
+                <p:fieldset legend="Requerimento" >
+
+                    <h:panelGrid columns="2">
+
+                        <p:selectOneMenu value="#{requerimentoBean.tipoRequerimento}" converter="simpleConverterTipoRequerimento"  >
+                            <f:selectItem itemLabel="Selecione o Tipo de Requerimento..." />
+                            <f:selectItems value="#{requerimentoBean.listaRequerimento}" 
+                                           var="lista" 
+                                           itemLabel="#{lista}"
+                                           itemValue="#{lista}"/>
+                        </p:selectOneMenu>
+
+                      <!--  <p:fileUpload value="" mode="simple"  style=" margin-left:35px"  /> -->
+
+                        <p:inputTextarea  rows="4" cols="66" placeholder="Observação. Descreve se desejar o motivo da requisição. "
+                                          value="#{requerimentoBean.observacao}"/>
+                        <br></br>                      
+                        <h:panelGrid columns="2"  style=" margin-left:400px">
+                            <p:commandButton value="Enviar Requisição" action="#{requerimentoBean.realizaRequerimento}" ajax="false" />
+                            <p:commandButton value="Limpar" />
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset> 
+
+            </h:form>
+        </h:body>
+
+    </f:view>
+</html>
+
