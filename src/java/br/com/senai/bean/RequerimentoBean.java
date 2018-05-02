@@ -73,32 +73,15 @@ public class RequerimentoBean {
 
     public void realizaRequerimento() {
 
-        try {
-            RequerimentoDAO requerimentoDao = new RequerimentoDAO();
-            converteCPF();
-            this.requerimento.setCpfRequerente(this.requerente);
-            this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
-            this.requerimento.setObservacao(this.observacao);
-            dao.insereRequerente(this.requerente);
-            requerimentoDao.insert(this.requerimento);
+        RequerimentoDAO requerimentoDao = new RequerimentoDAO();
+        converteCPF();
+        this.requerimento.setCpfRequerente(this.requerente);
+        this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
+        this.requerimento.setObservacao(this.observacao);
+        dao.insereRequerente(this.requerente);
+        requerimentoDao.insert(this.requerimento);
+        enviaEmail();
 
-            MensagemEmail mensEmail = new MensagemEmail();
-            mensEmail.setTitulo("Requerimento SESI SENAI");
-            mensEmail.setMensagem("Prezado " + requerente.getNomeRequerente() + ", recebemos"
-                    + " seu requerimento. Em breve entraremos em contato.");
-            mensEmail.setDestino(requerente.getEmail());
-
-            EmailUtil.enviaEmail(mensEmail);
-            System.out.println("Sucesso");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "E-mail enviado com sucesso para: "
-                    + mensEmail.getDestino(), "Informação"));
-        } catch (EmailException ex) {
-            System.out.println(" O erro"  + ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Falha ao enviar o email "
-                    + ex, "Informação"));
-        }
     }
 
     public List<TipoRequerimento> getListaRequerimento() {
@@ -139,6 +122,31 @@ public class RequerimentoBean {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    private void enviaEmail() {
+
+        try {
+            MensagemEmail mensEmail = new MensagemEmail();
+            mensEmail.setTitulo("Requerimento SESI SENAI");
+            mensEmail.setMensagem("Prezado " + this.requerente.getNomeRequerente() + ", recebemos"
+                    + " seu requerimento. Em breve entraremos em contato.");
+            mensEmail.setDestino(this.requerente.getEmail());
+
+            EmailUtil.enviaEmail(mensEmail);
+            System.out.println("Sucesso");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "E-mail enviado com sucesso para: "
+                    + mensEmail.getDestino(), "Informação"));
+
+        } catch (EmailException ex) {
+            System.out.println(" O erro" + ex);
+            ex.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Falha ao enviar o email "
+                    + ex, "Informação"));
+        }
+
     }
 
 }

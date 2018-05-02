@@ -34,9 +34,9 @@
 
                         <p:inputText placeholder="E-mail*" value="#{requerimentoBean.requerente.email}" 
                                      size="40" />
-                      <!--  <p:inputText placeholder="Digite novamente o seu E-mail*" value="" 
-                                     size="40" style=" margin-left:35px"/>
--->
+                        <!--  <p:inputText placeholder="Digite novamente o seu E-mail*" value="" 
+                                       size="40" style=" margin-left:35px"/>
+                        -->
                         <p:inputText placeholder="Pai" value="#{requerimentoBean.requerente.nomePai}" 
                                      size="40" />
                         <p:inputText placeholder="Mãe*" value="#{requerimentoBean.requerente.nomeMae}" 
@@ -58,18 +58,20 @@
                                            var="lista" 
                                            itemLabel="#{lista}"
                                            itemValue="#{lista}"/>
+                            <p:ajax event="change" update="uploadArquivo" process="@this" />
                         </p:selectOneMenu>
 
-                      <!--  <p:fileUpload value="" mode="simple"  style=" margin-left:35px"  /> -->
-
-                        <p:inputTextarea  rows="4" cols="66" placeholder="Observação. Descreve se desejar o motivo da requisição. "
-                                          value="#{requerimentoBean.observacao}"/>
-                        <br></br>                      
-                        <h:panelGrid columns="2"  style=" margin-left:400px">
-                            <p:commandButton value="Enviar Requisição" action="#{requerimentoBean.realizaRequerimento}" ajax="false" />
-                            <p:commandButton value="Limpar" />
-                        </h:panelGrid>
+                        <p:fileUpload  id="uploadArquivo" rendered="#{requerimentoBean.tipoRequerimento.codigoTipoSolicitacao == 'Aproveitamento de estudos(Necessário anexar documentos)'}" value="" mode="simple"  style=" margin-left:35px"  />
                     </h:panelGrid>
+                    <p:inputTextarea  rows="4" cols="66" placeholder="Observação. Descreve se desejar o motivo da requisição. "
+                                      value="#{requerimentoBean.observacao}"/>
+
+                    <br></br>                      
+                    <h:panelGrid columns="2"  style=" margin-left:400px">
+                        <p:commandButton value="Enviar Requisição" action="#{requerimentoBean.realizaRequerimento}" ajax="false" />
+                        <p:commandButton value="Limpar" />
+                    </h:panelGrid>
+
                 </p:fieldset> 
 
             </h:form>
