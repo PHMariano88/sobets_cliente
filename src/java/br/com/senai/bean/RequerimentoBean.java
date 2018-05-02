@@ -14,8 +14,6 @@ import br.com.senai.pojo.Requerimento;
 import br.com.senai.pojo.TipoRequerimento;
 import br.com.senai.util.EmailUtil;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -42,12 +40,15 @@ public class RequerimentoBean {
     private String observacao;
     private String confirmaEmail;
     private String cpf;
+    private boolean habilitaUploadArquivo;
 
     public RequerimentoBean() {
         requerente = new Requerente();
         dao = new RequerenteDAO();
         tipoRequerimento = new TipoRequerimento();
         requerimento = new Requerimento();
+        habilitaUploadArquivo = true;
+
     }
 
     @PostConstruct
@@ -68,20 +69,20 @@ public class RequerimentoBean {
         if (!cpf.isEmpty()) {
             requerente.setCpf(Long.parseLong(cpf));
         }
-
     }
 
     public void realizaRequerimento() {
 
         RequerimentoDAO requerimentoDao = new RequerimentoDAO();
         converteCPF();
-        this.requerimento.setCpfRequerente(this.requerente);
-        this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
-        this.requerimento.setObservacao(this.observacao);
-        dao.insereRequerente(this.requerente);
-        requerimentoDao.insert(this.requerimento);
-        enviaEmail();
-
+        if (validaEmail()) {
+            this.requerimento.setCpfRequerente(this.requerente);
+            this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
+            this.requerimento.setObservacao(this.observacao);
+            dao.insereRequerente(this.requerente);
+            requerimentoDao.insert(this.requerimento);
+            //   enviaEmail();
+        }
     }
 
     public List<TipoRequerimento> getListaRequerimento() {
@@ -124,28 +125,29 @@ public class RequerimentoBean {
         this.cpf = cpf;
     }
 
-    private void enviaEmail() {
+    private boolean validaEmail() {
 
-        try {
-            MensagemEmail mensEmail = new MensagemEmail();
-            mensEmail.setTitulo("Requerimento SESI SENAI");
-            mensEmail.setMensagem("Prezado " + this.requerente.getNomeRequerente() + ", recebemos"
-                    + " seu requerimento. Em breve entraremos em contato.");
-            mensEmail.setDestino(this.requerente.getEmail());
-
-            EmailUtil.enviaEmail(mensEmail);
-            System.out.println("Sucesso");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "E-mail enviado com sucesso para: "
-                    + mensEmail.getDestino(), "Informação"));
-
-        } catch (EmailException ex) {
-            System.out.println(" O erro" + ex);
-            ex.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Falha ao enviar o email "
-                    + ex, "Informação"));
+        boolean retorno;
+        FacesMessage msg = null;
+        if (!this.confirmaEmail.equals(this.requerente.getEmail())) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Inválido",
+                    "E-mails informados não são iguais");
+            retorno = false;
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            retorno = true;
         }
+        return retorno;
+    }
+
+    
+
+    public boolean isHabilitaUploadArquivo() {
+        return habilitaUploadArquivo;
+    }
+
+    public void habilitarUploadArquivo() {
+        habilitaUploadArquivo = tipoRequerimento.getCodigoTipoSolicitacao() != 1;
 
     }
 

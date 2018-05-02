@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.senai.dao;
 
 import br.com.senai.pojo.Requerente;
 import br.com.senai.util.HibernateUtil;
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 /**
@@ -15,26 +16,27 @@ import org.hibernate.Session;
  * @author paule
  */
 public class RequerenteDAO {
-    
-    
+
     private Session sessao;
-    
-    public RequerenteDAO(){
-    
+
+    public RequerenteDAO() {
+
         sessao = HibernateUtil.getSessionFactory().openSession();
     }
-    
-    public void insereRequerente(Requerente requerente){
-        
-        sessao.beginTransaction();
-        sessao.save(requerente);
-        sessao.getTransaction().commit();
-        System.out.println("Salvo com sucesso!!!");
-    
+
+    public void insereRequerente(Requerente requerente) {
+        try {
+            sessao.beginTransaction();
+            sessao.merge(requerente);
+            sessao.getTransaction().commit();
+            System.out.println("Salvo com sucesso!!!");
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+        }finally{
+            if(sessao.isOpen()){
+                sessao.close();
+            }
+        }
     }
-    
-    
-    
-    
-    
+
 }
