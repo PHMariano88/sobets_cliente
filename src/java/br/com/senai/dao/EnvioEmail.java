@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.senai.bean;
+package br.com.senai.dao;
 
 import br.com.senai.pojo.MensagemEmail;
 import br.com.senai.pojo.Requerente;

@@ -5,21 +5,26 @@
  */
 package br.com.senai.bean;
 
+import br.com.senai.dao.ArquivoAnexo;
 import br.com.senai.dao.RequerenteDAO;
 import br.com.senai.dao.RequerimentoDAO;
 import br.com.senai.dao.TipoRequerimentoDAO;
-import br.com.senai.pojo.MensagemEmail;
 import br.com.senai.pojo.Requerente;
 import br.com.senai.pojo.Requerimento;
 import br.com.senai.pojo.TipoRequerimento;
-import br.com.senai.util.EmailUtil;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import org.apache.commons.mail.EmailException;
+
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -41,14 +46,15 @@ public class RequerimentoBean {
     private String confirmaEmail;
     private String cpf;
     private boolean habilitaUploadArquivo;
+    private UploadedFile arquivoUpload;
 
     public RequerimentoBean() {
+
         requerente = new Requerente();
         dao = new RequerenteDAO();
         tipoRequerimento = new TipoRequerimento();
         requerimento = new Requerimento();
         habilitaUploadArquivo = true;
-
     }
 
     @PostConstruct
@@ -74,14 +80,23 @@ public class RequerimentoBean {
     public void realizaRequerimento() {
 
         RequerimentoDAO requerimentoDao = new RequerimentoDAO();
+        ArquivoAnexo arquivoAnexo = new ArquivoAnexo();
         converteCPF();
         if (validaEmail()) {
-            this.requerimento.setCpfRequerente(this.requerente);
+         /*   this.requerimento.setCpfRequerente(this.requerente);
             this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
             this.requerimento.setObservacao(this.observacao);
             dao.insereRequerente(this.requerente);
-            requerimentoDao.insert(this.requerimento);
-            //   enviaEmail();
+            requerimentoDao.insert(this.requerimento);*/
+           
+            
+            try {
+                arquivoAnexo.upload(this.arquivoUpload.getFileName(), this.arquivoUpload.getInputstream());
+                System.out.println("Transferido");
+                //   enviaEmail();
+            } catch (IOException ex) {
+                Logger.getLogger(RequerimentoBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -140,8 +155,6 @@ public class RequerimentoBean {
         return retorno;
     }
 
-    
-
     public boolean isHabilitaUploadArquivo() {
         return habilitaUploadArquivo;
     }
@@ -151,4 +164,23 @@ public class RequerimentoBean {
 
     }
 
+    public UploadedFile getArquivoUpload() {
+        return arquivoUpload;
+    }
+
+    public void setArquivoUpload(UploadedFile arquivoUpload) {
+        this.arquivoUpload = arquivoUpload;
+    }
+
+    public void uploadHandler(FileUploadEvent event) {
+        System.out.println("Passou aki");
+        if (event.getFile() != null) {
+            FacesMessage message = new FacesMessage("Succesful", arquivoUpload.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage("Erro é nulo", arquivoUpload.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+
+    }
 }

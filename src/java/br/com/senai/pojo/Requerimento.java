@@ -39,6 +39,7 @@ public class Requerimento implements Serializable {
     private String responsavel;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataFinalizacaoRequerimento;
+    private String diretorioAnexo;
 
     @Override
     public int hashCode() {
@@ -127,6 +128,14 @@ public class Requerimento implements Serializable {
 
     public void setDataFinalizacaoRequerimento(Date dataFinalizacaoRequerimento) {
         this.dataFinalizacaoRequerimento = dataFinalizacaoRequerimento;
+    }
+
+    public String getDiretorioAnexo() {
+        return diretorioAnexo;
+    }
+
+    public void setDiretorioAnexo(String diretorioAnexo) {
+        this.diretorioAnexo = diretorioAnexo;
     }
 
 }

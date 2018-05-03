@@ -14,7 +14,7 @@
         </h:head>
 
         <h:body>
-            <h:form>
+            <h:form enctype="multipart/form-data">
                 <h1>Requerimento Online: Preencha os dados abaixo</h1>
                 <p:growl id="msgsGrowl" showDetail="true"  />
                 <p:fieldset legend="Dados Pessoais" style="margin-bottom:20px">
@@ -59,17 +59,22 @@
                                            var="lista" 
                                            itemLabel="#{lista}"
                                            itemValue="#{lista}"/>
-                            <p:ajax event="change" update="uploadArquivo" listener="#{requerimentoBean.habilitarUploadArquivo}" />
+                            <p:ajax event="change" update="uploadArquivo" 
+                                    listener="#{requerimentoBean.habilitarUploadArquivo}" />
                         </p:selectOneMenu>
 
-                        <p:fileUpload  id="uploadArquivo" disabled="#{requerimentoBean.habilitaUploadArquivo}" value="" mode="simple"  style=" margin-left:35px"  />
+                        <p:fileUpload  id="uploadArquivo" disabled="#{requerimentoBean.habilitaUploadArquivo}" 
+                                       value="#{requerimentoBean.arquivoUpload}" 
+                                       mode="simple"  style=" margin-left:35px"  fileUploadListener="#{requerimentoBean.uploadHandler(event)}" />
                     </h:panelGrid>
-                    <p:inputTextarea  rows="4" cols="66" placeholder="Observação. Descreve se desejar o motivo da requisição. "
+                    <p:inputTextarea  rows="4" cols="66" 
+                                      placeholder="Observação. Descreve se desejar o motivo da requisição. "
                                       value="#{requerimentoBean.observacao}"/>
 
                     <br></br>                      
                     <h:panelGrid columns="2"  style=" margin-left:400px">
-                        <p:commandButton value="Enviar Requisição" update="msgsGrowl" action="#{requerimentoBean.realizaRequerimento}" ajax="false" />
+                        <p:commandButton value="Enviar Requisição" update="msgsGrowl" 
+                                         action="#{requerimentoBean.realizaRequerimento}" ajax="false" />
                         <p:commandButton value="Limpar" />
                     </h:panelGrid>
 
