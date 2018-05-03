@@ -59,13 +59,13 @@
                                            var="lista" 
                                            itemLabel="#{lista}"
                                            itemValue="#{lista}"/>
-                            <!-- <p:ajax event="change" update="uploadArquivo" 
-                                     listener="#{requerimentoBean.habilitarUploadArquivo}" /> -->
+                            <p:ajax event="change" update="uploadArquivo" 
+                                     listener="#{requerimentoBean.habilitarUploadArquivo}" /> 
                         </p:selectOneMenu>
 
                         <p:fileUpload  id="uploadArquivo" 
                                        value="#{requerimentoBean.arquivoUpload}" 
-                                       mode="simple"
+                                       mode="simple" skinSimple="true"
                                        style="margin-left:35px" label="Anexar Arquivos">
                         </p:fileUpload> 
 
