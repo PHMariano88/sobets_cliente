@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,32 +21,40 @@ import java.util.logging.Logger;
  */
 public class ArquivoAnexo {
 
-    private final String PASTA_DESTINO = "anexo_requerimentos";
-    
-    public void upload(String nomeArquivo, InputStream 
-            arquivoCarregado) {
-        String caminho = PASTA_DESTINO + File.separator + nomeArquivo;
-        File novoArquivo = new File(caminho);
+    private final String PASTA_DESTINO = "anexo_requerimento";
+
+    public String upload(String nomeArquivo, InputStream arquivoCarregado) {
+        String caminho = criaCaminho() + File.separator + nomeArquivo;
+        File novoArquivoDestino = null;
         try {
-            FileOutputStream saida = new FileOutputStream(novoArquivo);
-            copiar(arquivoCarregado, saida);
-        } catch (FileNotFoundException ex) {
+            novoArquivoDestino = new File(caminho);
+            FileOutputStream destino = new FileOutputStream(novoArquivoDestino);
+            copiar(arquivoCarregado, destino);
+        } catch (Exception ex) {
             Logger.getLogger(ArquivoAnexo.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return novoArquivoDestino.getAbsolutePath();
     }
 
     private void copiar(InputStream origem, OutputStream destino) {
         int byteTransferencia = 0;
         byte tamanhoMaximo[] = new byte[1024 * 10];
         try {
-            while((byteTransferencia = origem.read()) >= 0){
+            while ((byteTransferencia = origem.read()) >= 0) {
                 destino.write(tamanhoMaximo, 0, byteTransferencia);
-                
             }
+            destino.close();
         } catch (IOException ex) {
             Logger.getLogger(ArquivoAnexo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+
+    private String criaCaminho() {
+        File file = new File(PASTA_DESTINO);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        return file.getAbsolutePath();
     }
 
 }

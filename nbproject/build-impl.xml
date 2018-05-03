@@ -1011,7 +1011,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.hibernate4-support.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.blitzer-1.0.10.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.MySQLDriver.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${libs.commons_email.classpath}" todir="${build.web.dir}/WEB-INF/classes"/>
+
         <copyfiles files="${libs.commons_upload.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">

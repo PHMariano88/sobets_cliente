@@ -22,7 +22,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -83,20 +82,22 @@ public class RequerimentoBean {
         ArquivoAnexo arquivoAnexo = new ArquivoAnexo();
         converteCPF();
         if (validaEmail()) {
-         /*   this.requerimento.setCpfRequerente(this.requerente);
+            this.requerimento.setCpfRequerente(this.requerente);
             this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
             this.requerimento.setObservacao(this.observacao);
-            dao.insereRequerente(this.requerente);
-            requerimentoDao.insert(this.requerimento);*/
-           
-            
-            try {
-                arquivoAnexo.upload(this.arquivoUpload.getFileName(), this.arquivoUpload.getInputstream());
-                System.out.println("Transferido");
-                //   enviaEmail();
-            } catch (IOException ex) {
-                Logger.getLogger(RequerimentoBean.class.getName()).log(Level.SEVERE, null, ex);
+            if (this.tipoRequerimento.getCodigoTipoSolicitacao() == 1) {
+                try {
+                    this.requerimento.setDiretorioAnexo(arquivoAnexo.upload(this.arquivoUpload.getFileName(),
+                            this.arquivoUpload.getInputstream()));
+                    System.out.println("Transferido");
+                    //   enviaEmail();
+                } catch (IOException ex) {
+                    Logger.getLogger(RequerimentoBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            dao.insereRequerente(this.requerente);
+            requerimentoDao.insert(this.requerimento);
+
         }
     }
 
@@ -172,15 +173,4 @@ public class RequerimentoBean {
         this.arquivoUpload = arquivoUpload;
     }
 
-    public void uploadHandler(FileUploadEvent event) {
-        System.out.println("Passou aki");
-        if (event.getFile() != null) {
-            FacesMessage message = new FacesMessage("Succesful", arquivoUpload.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            FacesMessage message = new FacesMessage("Erro é nulo", arquivoUpload.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-
-    }
 }

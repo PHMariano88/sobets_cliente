@@ -36,8 +36,8 @@
                                      size="40" />
                         <p:inputText id="confirmaEmail" placeholder="Digite novamente o seu E-mail*" 
                                      value="#{requerimentoBean.confirmaEmail}" 
-                                       size="40" style=" margin-left:35px"/>
-                        
+                                     size="40" style=" margin-left:35px"/>
+
                         <p:inputText placeholder="Pai" value="#{requerimentoBean.requerente.nomePai}" 
                                      size="40" />
                         <p:inputText placeholder="Mãe*" value="#{requerimentoBean.requerente.nomeMae}" 
@@ -53,19 +53,23 @@
 
                     <h:panelGrid columns="2">
                         <p:selectOneMenu value="#{requerimentoBean.tipoRequerimento}" 
-                            converter="simpleConverterTipoRequerimento"  >
+                                         converter="simpleConverterTipoRequerimento"  >
                             <f:selectItem itemLabel="Selecione o Tipo de Requerimento..." />
                             <f:selectItems value="#{requerimentoBean.listaRequerimento}" 
                                            var="lista" 
                                            itemLabel="#{lista}"
                                            itemValue="#{lista}"/>
-                            <p:ajax event="change" update="uploadArquivo" 
-                                    listener="#{requerimentoBean.habilitarUploadArquivo}" />
+                            <!-- <p:ajax event="change" update="uploadArquivo" 
+                                     listener="#{requerimentoBean.habilitarUploadArquivo}" /> -->
                         </p:selectOneMenu>
 
-                        <p:fileUpload  id="uploadArquivo" disabled="#{requerimentoBean.habilitaUploadArquivo}" 
+                        <p:fileUpload  id="uploadArquivo" 
                                        value="#{requerimentoBean.arquivoUpload}" 
-                                       mode="simple"  style=" margin-left:35px"  fileUploadListener="#{requerimentoBean.uploadHandler(event)}" />
+                                       mode="simple"
+                                       style="margin-left:35px" label="Anexar Arquivos">
+                        </p:fileUpload> 
+
+
                     </h:panelGrid>
                     <p:inputTextarea  rows="4" cols="66" 
                                       placeholder="Observação. Descreve se desejar o motivo da requisição. "
