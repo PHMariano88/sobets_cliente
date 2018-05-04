@@ -21,28 +21,41 @@
 
                     <h:panelGrid  columns="2" style="margin-left:20px">
 
-                        <p:inputText placeholder="Nome*" value="#{requerimentoBean.requerente.nomeRequerente}" size="40"/>
-                        <p:inputText placeholder="CPF(Digite apenas números)*" value="#{requerimentoBean.cpf}" size="25" style=" margin-left:35px"/>
-                        <p:inputText placeholder="Documento de Identidade*" value="#{requerimentoBean.requerente.rg}" size="25"/>
+                        <p:inputText placeholder="Nome*" required="true" requiredMessage="Por favor, informe o seu nome."
+                                     value="#{requerimentoBean.requerente.nomeRequerente}" size="40"/>
+                        
+                        <p:inputMask placeholder="CPF(Digite apenas números)*" mask="999.999.999-99" converter="converterCpf"
+                                     required="true" requiredMessage="Por favor, informe o seu CPF." value="#{requerimentoBean.cpf}" 
+                                     size="25" style=" margin-left:35px"/>
+                        
+                        <p:inputText placeholder="Documento de Identidade*" required="true" 
+                                     requiredMessage="Por favor, informe o número da sua identidade" 
+                                     value="#{requerimentoBean.requerente.rg}" size="25"/>
 
                         <h:panelGrid columns="2" style=" margin-left:35px">
-                            <p:inputText placeholder="Telefone*" value="#{requerimentoBean.requerente.telefone}" 
+                            <p:inputMask placeholder="Telefone*" mask="(99)9999-9999" value="#{requerimentoBean.requerente.telefone}" 
                                          size="25" />
-                            <p:inputText placeholder="Celular*" value="#{requerimentoBean.requerente.celular}" 
+                            <p:inputMask placeholder="Celular*" mask="(99)99999-9999" value="#{requerimentoBean.requerente.celular}" 
                                          size="25" />
                         </h:panelGrid>
 
-                        <p:inputText id="email" placeholder="E-mail*" value="#{requerimentoBean.requerente.email}" 
+                        <p:inputText id="email" placeholder="E-mail*" required="true"
+                                     requiredMessage="Por favor, informe o seu E-mail"
+                                     value="#{requerimentoBean.requerente.email}" 
                                      size="40" />
+                        
                         <p:inputText id="confirmaEmail" placeholder="Digite novamente o seu E-mail*" 
+                                     required="true" requiredMessage="Por favor, informe novamente o seu E-mail"
                                      value="#{requerimentoBean.confirmaEmail}" 
                                      size="40" style=" margin-left:35px"/>
 
                         <p:inputText placeholder="Pai" value="#{requerimentoBean.requerente.nomePai}" 
                                      size="40" />
                         <p:inputText placeholder="Mãe*" value="#{requerimentoBean.requerente.nomeMae}" 
+                                     required="true" requiredMessage="Por favor, informe o nome da sua mãe"
                                      size="40" style=" margin-left:35px"/>
                         <p:inputText placeholder="Curso*" value="#{requerimentoBean.requerente.curso}" 
+                                     required="true" requiredMessage="Por favor, informe o nome do seu curso"
                                      size="50" />
                         <p:inputText placeholder="Turma" value="#{requerimentoBean.requerente.turma}" 
                                      size="20" style=" margin-left:35px"/>
@@ -52,7 +65,8 @@
                 <p:fieldset legend="Requerimento" >
 
                     <h:panelGrid columns="2">
-                        <p:selectOneMenu value="#{requerimentoBean.tipoRequerimento}" 
+                        <p:selectOneMenu value="#{requerimentoBean.tipoRequerimento}" required="true" 
+                                         requiredMessage="Por favor, selecione um tipo de requerimento."
                                          converter="simpleConverterTipoRequerimento"  >
                             <f:selectItem itemLabel="Selecione o Tipo de Requerimento..." />
                             <f:selectItems value="#{requerimentoBean.listaRequerimento}" 

@@ -97,7 +97,6 @@ public class RequerimentoBean {
             }
             dao.insereRequerente(this.requerente);
             requerimentoDao.insert(this.requerimento);
-
         }
     }
 
