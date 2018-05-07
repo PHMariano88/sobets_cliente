@@ -33,9 +33,6 @@ import org.primefaces.model.UploadedFile;
 @RequestScoped
 public class RequerimentoBean {
 
-    /**
-     * Creates a new instance of RequerenteBean
-     */
     private Requerente requerente;
     private RequerenteDAO dao;
     private List<TipoRequerimento> listaRequerimento;
@@ -46,6 +43,7 @@ public class RequerimentoBean {
     private String cpf;
     private boolean habilitaUploadArquivo;
     private UploadedFile arquivoUpload;
+    private MensagemFacesMensage mensagem;
 
     public RequerimentoBean() {
 
@@ -54,6 +52,7 @@ public class RequerimentoBean {
         tipoRequerimento = new TipoRequerimento();
         requerimento = new Requerimento();
         habilitaUploadArquivo = true;
+        mensagem = new MensagemFacesMensage();
     }
 
     @PostConstruct
@@ -78,25 +77,28 @@ public class RequerimentoBean {
 
     public void realizaRequerimento() {
 
-        RequerimentoDAO requerimentoDao = new RequerimentoDAO();
-        ArquivoAnexo arquivoAnexo = new ArquivoAnexo();
-        converteCPF();
-        if (validaEmail()) {
-            this.requerimento.setCpfRequerente(this.requerente);
-            this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
-            this.requerimento.setObservacao(this.observacao);
-            if (this.tipoRequerimento.getCodigoTipoSolicitacao() == 1) {
-                try {
+        try {
+            RequerimentoDAO requerimentoDao = new RequerimentoDAO();
+            ArquivoAnexo arquivoAnexo = new ArquivoAnexo();
+            converteCPF();
+            if (validaEmail()) {
+                this.requerimento.setCpfRequerente(this.requerente);
+                this.requerimento.setCodigoTipoRequerimento(this.tipoRequerimento);
+                this.requerimento.setObservacao(this.observacao);
+                if (this.tipoRequerimento.getCodigoTipoSolicitacao() == 1) {
                     this.requerimento.setDiretorioAnexo(arquivoAnexo.upload(this.arquivoUpload.getFileName(),
                             this.arquivoUpload.getInputstream()));
-                    System.out.println("Transferido");
-                    //   enviaEmail();
-                } catch (IOException ex) {
-                    Logger.getLogger(RequerimentoBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                dao.insereRequerente(this.requerente);
+                requerimentoDao.insert(this.requerimento);
+                mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Sucesso",
+                        "Requerimento realizado com sucesso, por favor fique atento ao seu email. Em breve "
+                        + "entraremos em contato com você por ele.");
+                limpaCampos();
             }
-            dao.insereRequerente(this.requerente);
-            requerimentoDao.insert(this.requerimento);
+        } catch (Exception ex) {
+            mensagem.constroiMensagemErro(FacesContext.getCurrentInstance(), "Erro ao realizar a ação",
+                    "Por favor tente novamente, se o erro persistir contate o administrador do sistema." + ex);
         }
     }
 
@@ -142,17 +144,16 @@ public class RequerimentoBean {
 
     private boolean validaEmail() {
 
-        boolean retorno;
+        boolean emailValido;
         FacesMessage msg = null;
         if (!this.confirmaEmail.equals(this.requerente.getEmail())) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Inválido",
+            mensagem.constroiMensagemErro(FacesContext.getCurrentInstance(), "Inválido",
                     "E-mails informados não são iguais");
-            retorno = false;
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            emailValido = false;
         } else {
-            retorno = true;
+            emailValido = true;
         }
-        return retorno;
+        return emailValido;
     }
 
     public boolean isHabilitaUploadArquivo() {
@@ -172,4 +173,12 @@ public class RequerimentoBean {
         this.arquivoUpload = arquivoUpload;
     }
 
+    public void limpaCampos() {
+        requerente = null;
+        requerimento = null;
+        tipoRequerimento = null;
+        cpf = null;
+        observacao = null;
+        confirmaEmail = null;
+    }
 }

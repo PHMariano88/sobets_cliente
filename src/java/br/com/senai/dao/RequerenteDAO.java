@@ -24,19 +24,17 @@ public class RequerenteDAO {
         sessao = HibernateUtil.getSessionFactory().openSession();
     }
 
-    public void insereRequerente(Requerente requerente) {
+    public void insereRequerente(Requerente requerente) throws HibernateException {
         try {
             sessao.beginTransaction();
             sessao.merge(requerente);
             sessao.getTransaction().commit();
             System.out.println("Salvo com sucesso!!!");
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
         }finally{
             if(sessao.isOpen()){
                 sessao.close();
             }
         }
-    }
+        }
 
-}
+    }

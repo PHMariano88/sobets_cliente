@@ -14,7 +14,7 @@
         </h:head>
 
         <h:body>
-            <h:form enctype="multipart/form-data">
+            <h:form enctype="multipart/form-data" id="formRequerimento" >
                 <h1>Requerimento Online: Preencha os dados abaixo</h1>
                 <p:growl id="msgsGrowl" showDetail="true"  />
                 <p:fieldset legend="Dados Pessoais" style="margin-bottom:20px">
@@ -93,7 +93,9 @@
                     <h:panelGrid columns="2"  style=" margin-left:400px">
                         <p:commandButton value="Enviar Requisição" update="msgsGrowl" 
                                          action="#{requerimentoBean.realizaRequerimento}" ajax="false" />
-                        <p:commandButton value="Limpar" />
+                        <p:commandButton value="Limpar" update="formRequerimento" process="@this">
+                            <p:resetInput target="formRequerimento"/>
+                        </p:commandButton>
                     </h:panelGrid>
 
                 </p:fieldset> 
