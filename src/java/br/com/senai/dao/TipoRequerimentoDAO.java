@@ -40,14 +40,28 @@ public class TipoRequerimentoDAO {
         }
     }
 
-    public TipoRequerimento buscaTipoRequerimentoById(String tipoRequerimento) throws HibernateException {
+    public TipoRequerimento buscaTipoRequerimentoPorSetor(String setor) {
+
+        try{
+        
+            sessao.beginTransaction();
+            
+            return null;
+        }finally{
+            if(sessao.isOpen()){
+                sessao.close();
+            }
+        }
+    }
+
+    public TipoRequerimento buscaTipoRequerimentoByDescricao(String tipoRequerimento) throws HibernateException {
 
         try {
             sessao.beginTransaction();
             Criteria criteria = sessao.createCriteria(TipoRequerimento.class);
             criteria.add(Restrictions.like("descricaoTipoRequerimento", tipoRequerimento));
             return (TipoRequerimento) criteria.uniqueResult();
-        }finally{
+        } finally {
             if (sessao.isOpen()) {
                 sessao.close();
             }

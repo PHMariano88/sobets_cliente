@@ -25,7 +25,7 @@ public class TipoRequerimentoConverter implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         TipoRequerimento tipo = new TipoRequerimento();
         if (value != null && !"".equals(value)) {
-            tipo = tipoDAO.buscaTipoRequerimentoById(value);
+            tipo = tipoDAO.buscaTipoRequerimentoByDescricao(value);
             System.out.println("Os valores são " + tipo.getSetor());
         }
 
