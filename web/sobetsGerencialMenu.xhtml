@@ -20,7 +20,7 @@
 
             </h:form>
         </p:fieldset>
-        <p:tabView activeIndex="#{gerencialMenuBean.tabIndex}" >
+        <p:tabView activeIndex="#{gerencialMenuBean.tabIndex}" onTabChange="#{gerencialMenuBean.mensagem()}" onTabShow="#{gerencialMenuBean.mensagem()}" >
             <p:tab title="Recebidos"   >
                 <h:panelGrid columns="2" cellpadding="10">
                     <p:dataTable var="req" value="#{gerencialMenuBean.requerimento}" style="text-align: center" >
@@ -51,6 +51,7 @@
 
                 </h:panelGrid>
             </p:tab>
+            
             <p:tab title="Em Analise">
                 <h:panelGrid columns="2" cellpadding="10">
                     <p:dataTable >

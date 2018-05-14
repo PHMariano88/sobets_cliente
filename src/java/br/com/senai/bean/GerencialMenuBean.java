@@ -53,5 +53,10 @@ public class GerencialMenuBean implements Serializable {
     public void setTabIndex(int tabIndex) {
         this.tabIndex = tabIndex;
     }
+    
+    public void mensagem(){
+        System.out.println("A tab mudou" + tabIndex);
+    
+    }
 
 }
