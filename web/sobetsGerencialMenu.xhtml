@@ -10,112 +10,109 @@
     <h:body>
         <h1>SOBETS - Sistema de Gerenciamento de Requerimentos</h1>
 
-            <p:fieldset  legend="Pesquisa por CPF" >
-                <h:form>
-                    <h:panelGrid columns="2"  cellpadding="5">
-                        <p:inputText size="30" placeholder="Digite o CPF do Requerente"/>
-                        <p:button value="Pesquisar" />
+        <p:fieldset  legend="Pesquisa por CPF" >
+            <h:form>
+                <h:panelGrid columns="2"  cellpadding="5">
+                    <p:inputText size="30" placeholder="Digite o CPF do Requerente"/>
+                    <p:button value="Pesquisar" />
 
-                    </h:panelGrid>
+                </h:panelGrid>
 
-                </h:form>
-            </p:fieldset>
-            <p:tabView>
-                <p:tab title="Recebidos">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:dataTable var="req" value="#{gerencialMenuBean.requerimento}" >
-                            <f:facet name="header">
-                                <p:outputLabel value="Requerimentos Recebidos" />
-                            </f:facet>
+            </h:form>
+        </p:fieldset>
+        <p:tabView activeIndex="#{gerencialMenuBean.tabIndex}" >
+            <p:tab title="Recebidos"   >
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:dataTable var="req" value="#{gerencialMenuBean.requerimento}" style="text-align: center" >
+                        
+                        <f:facet name="header">
+                            <p:outputLabel value="Requerimentos Recebidos"/>
+                        </f:facet>
 
-                            <p:column headerText="Nome">
-                                <h:outputText value="#{req.cpfRequerente.nomeRequerente}" />
-                            </p:column>
+                        <p:column headerText="Nome" width="20%">
+                            <h:outputText value="#{req.cpfRequerente.nomeRequerente}" />
+                        </p:column>
 
-                            <p:column headerText="Requerimento">
-                         
-                                <h:outputText value="#{req.codigoTipoRequerimento.descricaoTipoRequerimento}" />
-                            </p:column>
+                        <p:column headerText="Requerimento" width="30%">
+                            <h:outputText value="#{req.codigoTipoRequerimento.descricaoTipoRequerimento}" />
+                        </p:column>
 
-                            <p:column headerText="Data">
-                                <h:outputText  value="#{req.dataRequerimento}"  />
-                            </p:column>
+                        <p:column headerText="Data" width="10%">
+                            <h:outputText  value="#{req.dataRequerimento}"  >
+                                <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
+                            </h:outputText>
+                        </p:column>
 
-                            <p:column headerText="Observação">
-                                <h:outputText value=" Preciso da minha 2 via rápido" />
-                            </p:column>
+                        <p:column headerText="Ação" width="13%">
+                            <p:button value="Detalhes"></p:button>
+                        </p:column>
+                        
+                    </p:dataTable>
 
-                            <p:column headerText="Ação">
-                                <p:button value="Analisar Requerimento"></p:button>
-                            </p:column>
-                        </p:dataTable>
+                </h:panelGrid>
+            </p:tab>
+            <p:tab title="Em Analise">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:dataTable >
+                        <f:facet name="header">
+                            <p:outputLabel value="Requerimentos em Analise" />
+                        </f:facet>
 
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab title="Em Analise">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:dataTable >
-                            <f:facet name="header">
-                                <p:outputLabel value="Requerimentos em Analise" />
-                            </f:facet>
+                       <p:column headerText="Nome" width="20%">
+                            <h:outputText value="#{req.cpfRequerente.nomeRequerente}" />
+                        </p:column>
 
-                            <p:column headerText="Nome">
-                                <h:outputText value="Pedro I" />
-                            </p:column>
+                        <p:column headerText="Requerimento" width="30%">
+                            <h:outputText value="#{req.codigoTipoRequerimento.descricaoTipoRequerimento}" />
+                        </p:column>
 
-                            <p:column headerText="Requerimento">
-                                Segunda via de diploma
-                                <h:outputText value="Segunda Via de Diploma" />
-                            </p:column>
+                        <p:column headerText="Data" width="10%">
+                            <h:outputText  value="#{req.dataRequerimento}"  >
+                                <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
+                            </h:outputText>
+                        </p:column>
 
-                            <p:column headerText="Data">
-                                <h:outputText value="22/06/17" />
-                            </p:column>
+                        <p:column headerText="Ação" width="13%">
+                            <p:button value="Finalizar"></p:button>
+                        </p:column>
 
-                            <p:column headerText="Observação">
-                                <h:outputText value=" Preciso da minha 2 via rápido" />
-                            </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:tab>
 
-                            <p:column headerText="Ação">
-                                <p:button value="Analisar Requerimento"></p:button>
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
-                </p:tab>
-                
-                <p:tab title="Finalizados">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:dataTable >
-                            <f:facet name="header">
-                                <p:outputLabel value="Requerimentos Finalizados" />
-                            </f:facet>
+            <p:tab title="Finalizados">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:dataTable >
+                        <f:facet name="header">
+                            <p:outputLabel value="Requerimentos Finalizados" />
+                        </f:facet>
 
-                            <p:column headerText="Nome">
-                                <h:outputText value="Pedro I" />
-                            </p:column>
+                        <p:column headerText="Nome">
+                            <h:outputText value="Pedro I" />
+                        </p:column>
 
-                            <p:column headerText="Requerimento">
-                                Segunda via de diploma
-                                <h:outputText value="Segunda Via de Diploma" />
-                            </p:column>
+                        <p:column headerText="Requerimento">
+                            Segunda via de diploma
+                            <h:outputText value="Segunda Via de Diploma" />
+                        </p:column>
 
-                            <p:column headerText="Data">
-                                <h:outputText value="22/06/17" />
-                            </p:column>
+                        <p:column headerText="Data">
+                            <h:outputText value="22/06/17" />
+                        </p:column>
 
-                            <p:column headerText="Observação">
-                                <h:outputText value=" Preciso da minha 2 via rápido" />
-                            </p:column>
+                        <p:column headerText="Observação">
+                            <h:outputText value=" Preciso da minha 2 via rápido" />
+                        </p:column>
 
-                            <p:column headerText="Ação">
-                                <p:button value="Analisar Requerimento"></p:button>
-                            </p:column>
-                        </p:dataTable>
+                        <p:column headerText="Ação">
+                            <p:button value="Analisar Requerimento"></p:button>
+                        </p:column>
+                    </p:dataTable>
 
-                    </h:panelGrid>
-                </p:tab>
-                
-            </p:tabView>
+                </h:panelGrid>
+            </p:tab>
+
+        </p:tabView>
     </h:body>
 </html>
 

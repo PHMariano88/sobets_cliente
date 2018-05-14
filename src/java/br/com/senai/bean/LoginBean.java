@@ -5,7 +5,7 @@
  */
 package br.com.senai.bean;
 
-import br.com.senai.dao.RequerimentoDAO;
+import br.com.senai.util.FacesUtil;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -20,8 +20,6 @@ public class LoginBean implements Serializable {
 
     private final String[] arraySetor = {"PEDAGOGIA", "SECRETARIA", "FINANCEIRO"};
     private String setor;
-    public static String SETOR_SELECIONADO;
-    public static String RESPONSAVEL_LOGADO;
     private String nomeLogin;
 
     public LoginBean() {
@@ -49,8 +47,8 @@ public class LoginBean implements Serializable {
     }
 
     public String login() {
-        SETOR_SELECIONADO = getSetor();
-        RESPONSAVEL_LOGADO = getNomeLogin();
+        FacesUtil.setApplicationMapValue("paramSetor", this.setor);
+        FacesUtil.setApplicationMapValue("paramNome", this.nomeLogin);
         return "sobetsGerencialMenu";
     }
 }

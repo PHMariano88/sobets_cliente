@@ -54,11 +54,11 @@ public class RequerimentoDAO {
                 + "     requerimento.codigoTipoRequerimento = tpRequerimento.codigoTipoRequerimento and\n"
                 + "     req.cpf = requerimento.cpfRequerente and\n"
                 + "     requerimento.status like 'ENVIADO' and\n"
-                + "     tpRequerimento.setorResponsavel = 'PEDAGOGIA'\n"
+                + "     tpRequerimento.setorResponsavel = :setor \n"
                 + "order by \n"
                 + "	 requerimento.dataRequerimento	\n"
                 + "     ");
-//        query.setParameter("setor", setor);
+        query.setParameter("setor", setor);
         List lista = query.list();
 
         return lista;

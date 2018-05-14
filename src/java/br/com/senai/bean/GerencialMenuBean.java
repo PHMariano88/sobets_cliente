@@ -7,12 +7,13 @@ package br.com.senai.bean;
 
 import br.com.senai.dao.RequerimentoDAO;
 import br.com.senai.pojo.Requerimento;
+import br.com.senai.util.FacesUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+
 
 /**
  *
@@ -24,6 +25,7 @@ public class GerencialMenuBean implements Serializable {
 
     private List<Requerimento> requerimento;
     private RequerimentoDAO reqDao;
+    private int tabIndex;
 
     public GerencialMenuBean() {
         reqDao = new RequerimentoDAO();
@@ -31,8 +33,9 @@ public class GerencialMenuBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        requerimento = reqDao.selectRequerimentoBySetor(LoginBean.SETOR_SELECIONADO);
+        requerimento = reqDao.selectRequerimentoBySetor(FacesUtil.getApplicationMapValue("paramSetor").toString());
         System.out.println("passou aki " + requerimento.size());
+      
     }
 
     public List<Requerimento> getRequerimento() {
@@ -41,6 +44,14 @@ public class GerencialMenuBean implements Serializable {
 
     public void setRequerimento(List requerimento) {
         this.requerimento = requerimento;
+    }
+
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
     }
 
 }

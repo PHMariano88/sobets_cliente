@@ -9,19 +9,24 @@
     </h:head>
     <h:body>
         <p:fieldset  legend="Informe o seu perfil para Login" style="margin-top:15%; margin-left:30%; width: 37%">
+            
             <h:form>
                 <h:panelGrid columns="1" cellpadding="5">   
-                    <p:selectOneMenu style="margin-top:5%" >
-                        <f:selectItem itemLabel="Selecione seu setor..." 
-                                      value="#{loginBean.setor}" />
+                    <p:selectOneMenu style="margin-top:5%" value="#{loginBean.setor}" >
+                        <f:selectItem itemLabel="Selecione seu setor..." noSelectionOption="true"
+                                       />
                         <f:selectItems var="listaSetor"
                                        itemLabel="#{listaSetor}" 
-                                       value="#{loginBean.arraySetor}"  />      
+                                       value="#{loginBean.arraySetor}"  
+                                       itemValue="#{listaSetor}"/>      
                     </p:selectOneMenu>
                     <p:inputText placeholder="Nome" value="#{loginBean.nomeLogin}" size="30" />
                 </h:panelGrid>
-                <p:commandButton value="Entrar" ajax="false" action="#{loginBean.login}" style="margin-left:45%" />
+                <p:commandButton value="Entrar" ajax="false" action="#{loginBean.login}" style="margin-left:45%" >
+           
+                </p:commandButton>    
             </h:form>
+        
         </p:fieldset>
     </h:body>
 </html>
