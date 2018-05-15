@@ -26,7 +26,7 @@ public class TipoRequerimentoConverter implements Converter {
         TipoRequerimento tipo = new TipoRequerimento();
         if (value != null && !"".equals(value)) {
             tipo = tipoDAO.buscaTipoRequerimentoByDescricao(value);
-            System.out.println("Os valores são " + tipo.getSetor());
+           
         }
 
         return tipo;

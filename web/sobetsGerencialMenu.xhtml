@@ -20,55 +20,55 @@
 
             </h:form>
         </p:fieldset>
-        <p:tabView activeIndex="#{gerencialMenuBean.tabIndex}" onTabChange="#{gerencialMenuBean.mensagem()}" onTabShow="#{gerencialMenuBean.mensagem()}" >
+        <p:tabView >
             <p:tab title="Recebidos"   >
                 <h:panelGrid columns="2" cellpadding="10">
-                    <p:dataTable var="req" value="#{gerencialMenuBean.requerimento}" style="text-align: center" >
-                        
+                    <p:dataTable var="reqRecebido" value="#{gerencialMenuBean.listaRequerimentoRecebido}" style="text-align: center" >
+
                         <f:facet name="header">
                             <p:outputLabel value="Requerimentos Recebidos"/>
                         </f:facet>
 
                         <p:column headerText="Nome" width="20%">
-                            <h:outputText value="#{req.cpfRequerente.nomeRequerente}" />
+                            <h:outputText value="#{reqRecebido.cpfRequerente.nomeRequerente}" />
                         </p:column>
 
                         <p:column headerText="Requerimento" width="30%">
-                            <h:outputText value="#{req.codigoTipoRequerimento.descricaoTipoRequerimento}" />
+                            <h:outputText value="#{reqRecebido.codigoTipoRequerimento.descricaoTipoRequerimento}" />
                         </p:column>
 
                         <p:column headerText="Data" width="10%">
-                            <h:outputText  value="#{req.dataRequerimento}"  >
+                            <h:outputText  value="#{reqRecebido.dataRequerimento}"  >
                                 <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Ação" width="13%">
-                            <p:button value="Detalhes"></p:button>
+                        <p:column headerText="Detalhe" width="13%">
+                            <p:commandButton update="requerimentoDetalhe" icon="ui-icon-search" oncomplete="PF('requerimentoDialog').show()" title="Detalhes">
+                                <f:setPropertyActionListener value="#{reqRecebido}" target="#{gerencialMenuBean.requerimentoSelecionado}"/>
+                            </p:commandButton>
                         </p:column>
-                        
                     </p:dataTable>
-
                 </h:panelGrid>
             </p:tab>
-            
+
             <p:tab title="Em Analise">
                 <h:panelGrid columns="2" cellpadding="10">
-                    <p:dataTable >
+                    <p:dataTable var="reqAnalise" value="#{gerencialMenuBean.listaRequerimentoEmAnalise}" style="text-align: center">
                         <f:facet name="header">
                             <p:outputLabel value="Requerimentos em Analise" />
                         </f:facet>
 
-                       <p:column headerText="Nome" width="20%">
-                            <h:outputText value="#{req.cpfRequerente.nomeRequerente}" />
+                        <p:column headerText="Nome" width="20%">
+                            <h:outputText value="#{reqAnalise.cpfRequerente.nomeRequerente}" />
                         </p:column>
 
                         <p:column headerText="Requerimento" width="30%">
-                            <h:outputText value="#{req.codigoTipoRequerimento.descricaoTipoRequerimento}" />
+                            <h:outputText value="#{reqAnalise.codigoTipoRequerimento.descricaoTipoRequerimento}" />
                         </p:column>
 
                         <p:column headerText="Data" width="10%">
-                            <h:outputText  value="#{req.dataRequerimento}"  >
+                            <h:outputText  value="#{reqAnalise.dataRequerimento}"  >
                                 <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
                             </h:outputText>
                         </p:column>
@@ -83,37 +83,85 @@
 
             <p:tab title="Finalizados">
                 <h:panelGrid columns="2" cellpadding="10">
-                    <p:dataTable >
+                    <p:dataTable  var="reqFinalizado" value="#{gerencialMenuBean.listaRequerimentoFinalizado}" style="text-align: center">
                         <f:facet name="header">
                             <p:outputLabel value="Requerimentos Finalizados" />
                         </f:facet>
 
-                        <p:column headerText="Nome">
-                            <h:outputText value="Pedro I" />
+                        <p:column headerText="N° do Requerimento" width="10%">
+                            <h:outputText value="#{reqFinalizado.codigoRequerimento}" />
                         </p:column>
 
-                        <p:column headerText="Requerimento">
-                            Segunda via de diploma
-                            <h:outputText value="Segunda Via de Diploma" />
+                        <p:column headerText="Nome" width="20%">
+                            <h:outputText value="#{reqFinalizado.cpfRequerente.nomeRequerente}" />
                         </p:column>
 
-                        <p:column headerText="Data">
-                            <h:outputText value="22/06/17" />
+                        <p:column headerText="Requerimento" width="30%">
+                            <h:outputText value="#{reqFinalizado.codigoTipoRequerimento.descricaoTipoRequerimento}" />
                         </p:column>
 
-                        <p:column headerText="Observação">
-                            <h:outputText value=" Preciso da minha 2 via rápido" />
-                        </p:column>
-
-                        <p:column headerText="Ação">
-                            <p:button value="Analisar Requerimento"></p:button>
+                        <p:column headerText="Data" width="10%">
+                            <h:outputText  value="#{reqFinalizado.dataFinalizacaoRequerimento}"  >
+                                <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
+                            </h:outputText>
                         </p:column>
                     </p:dataTable>
 
                 </h:panelGrid>
             </p:tab>
-
         </p:tabView>
+
+        <p:dialog header="Detalhes do Requerimento" widgetVar="requerimentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="requerimentoDetalhe" >
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel value="N° do Requerimento"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.codigoRequerimento}"/>
+
+                    <p:outputLabel value="Requerimento"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.codigoTipoRequerimento.descricaoTipoRequerimento}"/>
+
+                    <p:outputLabel value="Data do Requerimento"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.dataRequerimento}"/>
+
+                    <p:outputLabel value="Requerente"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.nomeRequerente}"/>
+
+                    <p:outputLabel value="Observação"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.observacao}"/>
+
+                    <p:outputLabel value="CPF"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.cpf}"/>
+
+                    <p:outputLabel value="RG"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.rg}"/>
+
+                    <p:outputLabel value="Telefone"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.telefone}"/>
+
+                    <p:outputLabel value="Celular"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.celular}"/>
+
+                    <p:outputLabel value="Pai"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.nomePai}"/>
+
+                    <p:outputLabel value="Mãe"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.nomeMae}"/>
+
+                    <p:outputLabel value="Curso"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.curso}"/>
+
+                    <p:outputLabel value="Turma"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.turma}"/>
+                    <p:commandButton value="Arquivo em anexo" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{gerencialMenuBean.fileDownload}" />
+                    </p:commandButton>
+
+                </p:panelGrid>
+                <p:commandButton  value="Analisar" />
+            </h:form>
+
+        </p:dialog>
     </h:body>
 </html>
 
