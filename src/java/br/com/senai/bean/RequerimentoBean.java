@@ -12,12 +12,14 @@ import br.com.senai.dao.TipoRequerimentoDAO;
 import br.com.senai.pojo.Requerente;
 import br.com.senai.pojo.Requerimento;
 import br.com.senai.pojo.TipoRequerimento;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.HibernateException;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -91,7 +93,7 @@ public class RequerimentoBean {
                         + "entraremos em contato com você por ele.");
                 limpaCampos();
             }
-        } catch (Exception ex) {
+        } catch (IOException | HibernateException ex) {
             mensagem.constroiMensagemErro(FacesContext.getCurrentInstance(), "Erro ao realizar a ação",
                     "Por favor tente novamente, se o erro persistir contate o administrador do sistema." + ex);
         }

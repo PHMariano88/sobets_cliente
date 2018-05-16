@@ -37,7 +37,22 @@ public class RequerimentoDAO {
             sessao.save(requerimento);
             sessao.getTransaction().commit();
         } finally {
-            sessao.close();
+            if (sessao.isOpen()) {
+                sessao.close();
+            }
+        }
+    }
+
+    public void updateRequerimento(Requerimento requerimento) throws HibernateException{
+
+        try {
+            sessao.beginTransaction();
+            sessao.update(requerimento);
+            sessao.getTransaction().commit();
+        } finally {
+            if (sessao.isOpen()) {
+                sessao.close();
+            }
         }
     }
 

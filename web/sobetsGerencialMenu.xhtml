@@ -15,12 +15,11 @@
                 <h:panelGrid columns="2"  cellpadding="5">
                     <p:inputText size="30" placeholder="Digite o CPF do Requerente"/>
                     <p:button value="Pesquisar" />
-
                 </h:panelGrid>
-
-            </h:form>
+            </h:form>            
         </p:fieldset>
-        <p:tabView >
+
+        <p:tabView id="tabRequerimentos">
             <p:tab title="Recebidos"   >
                 <h:panelGrid columns="2" cellpadding="10">
                     <p:dataTable var="reqRecebido" value="#{gerencialMenuBean.listaRequerimentoRecebido}" style="text-align: center" >
@@ -44,7 +43,7 @@
                         </p:column>
 
                         <p:column headerText="Detalhe" width="13%">
-                            <p:commandButton update="requerimentoDetalhe" icon="ui-icon-search" oncomplete="PF('requerimentoDialog').show()" title="Detalhes">
+                            <p:commandButton update="requerimentoEnviado" icon="ui-icon-search" oncomplete="PF('requerimentoEnviadoDialog').show()" title="Detalhes">
                                 <f:setPropertyActionListener value="#{reqRecebido}" target="#{gerencialMenuBean.requerimentoSelecionado}"/>
                             </p:commandButton>
                         </p:column>
@@ -52,7 +51,7 @@
                 </h:panelGrid>
             </p:tab>
 
-            <p:tab title="Em Analise">
+            <p:tab title="Em Análise">
                 <h:panelGrid columns="2" cellpadding="10">
                     <p:dataTable var="reqAnalise" value="#{gerencialMenuBean.listaRequerimentoEmAnalise}" style="text-align: center">
                         <f:facet name="header">
@@ -67,16 +66,21 @@
                             <h:outputText value="#{reqAnalise.codigoTipoRequerimento.descricaoTipoRequerimento}" />
                         </p:column>
 
+                        <p:column headerText="Responsável" width="10%">
+                            <h:outputText  value="#{reqAnalise.responsavel}"  />                      
+                        </p:column>
+
                         <p:column headerText="Data" width="10%">
                             <h:outputText  value="#{reqAnalise.dataRequerimento}"  >
                                 <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Ação" width="13%">
-                            <p:button value="Finalizar"></p:button>
+                        <p:column headerText="Detalhe" width="13%">
+                            <p:commandButton update="requerimentoAnalise" icon="ui-icon-search" oncomplete="PF('requerimentoAnaliseDialog').show()" title="Detalhes">
+                                <f:setPropertyActionListener value="#{reqAnalise}" target="#{gerencialMenuBean.requerimentoSelecionado}"/>
+                            </p:commandButton>
                         </p:column>
-
                     </p:dataTable>
                 </h:panelGrid>
             </p:tab>
@@ -100,6 +104,10 @@
                             <h:outputText value="#{reqFinalizado.codigoTipoRequerimento.descricaoTipoRequerimento}" />
                         </p:column>
 
+                        <p:column headerText="Responsável" width="10%">
+                            <h:outputText  value="#{reqAnalise.responsavel}"  />                      
+                        </p:column>
+
                         <p:column headerText="Data" width="10%">
                             <h:outputText  value="#{reqFinalizado.dataFinalizacaoRequerimento}"  >
                                 <f:convertDateTime pattern="dd/MM/yyyy" locale="pt,BR" timeZone="Brazil/East"/>
@@ -111,8 +119,8 @@
             </p:tab>
         </p:tabView>
 
-        <p:dialog header="Detalhes do Requerimento" widgetVar="requerimentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-            <h:form id="requerimentoDetalhe" >
+        <p:dialog header="Detalhes do Requerimento" widgetVar="requerimentoEnviadoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="requerimentoEnviado">
                 <p:panelGrid columns="2">
 
                     <p:outputLabel value="N° do Requerimento"/>
@@ -153,15 +161,76 @@
 
                     <p:outputLabel value="Turma"/>
                     <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.turma}"/>
-                    <p:commandButton value="Arquivo em anexo" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-                        <p:fileDownload value="#{gerencialMenuBean.fileDownload}" />
+
+                    <p:outputLabel value="Anexo"/>
+                    <p:commandButton value="Arquivo em anexo" ajax="false" icon="ui-icon-arrowthick-1-s">
                     </p:commandButton>
-
                 </p:panelGrid>
-                <p:commandButton  value="Analisar" />
-            </h:form>
 
+                <br />
+                <br />
+
+                <p:commandButton style="align-items: center" update="tabRequerimentos"
+                                 action="#{gerencialMenuBean.analisaRequerimento}"
+                                 value="Analisar Requerimento" />
+            </h:form>
         </p:dialog>
+
+        <p:dialog header="Detalhes do Requerimento - Analise" widgetVar="requerimentoAnaliseDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="requerimentoAnalise">
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel value="Requerimento"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.codigoTipoRequerimento.descricaoTipoRequerimento}"/>
+
+                    <p:outputLabel value="Data do Requerimento"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.dataRequerimento}"/>
+
+                    <p:outputLabel value="Requerente"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.nomeRequerente}"/>
+
+                    <p:outputLabel value="Observação"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.observacao}"/>
+
+                    <p:outputLabel value="CPF"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.cpf}"/>
+
+                    <p:outputLabel value="RG"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.rg}"/>
+
+                    <p:outputLabel value="Celular"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.celular}"/>
+
+                    <p:outputLabel value="Pai"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.nomePai}"/>
+
+                    <p:outputLabel value="Mãe"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.nomeMae}"/>
+
+                    <p:outputLabel value="Curso"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.curso}"/>
+
+                    <p:outputLabel value="Turma"/>
+                    <p:outputLabel value="#{gerencialMenuBean.requerimentoSelecionado.cpfRequerente.turma}"/>
+
+                    <p:outputLabel value="Resposta do Responsável"/>
+                    <p:inputTextarea  rows="4" cols="66" 
+                                      placeholder="Resposta para a requisição. "
+                                      value=""/>
+
+                    <p:outputLabel value="Anexo"/>
+                    <p:commandButton value="Arquivo em anexo" ajax="false" icon="ui-icon-arrowthick-1-s">
+                    </p:commandButton>
+                </p:panelGrid>
+
+                <br />
+                <br />
+                <p:commandButton style="align-items: center" update="tabRequerimentos"
+                                 action="#{gerencialMenuBean.finalizaRequerimento()}"
+                                 value="Finalizar Requerimento" />
+            </h:form>
+        </p:dialog>
+
     </h:body>
 </html>
 
