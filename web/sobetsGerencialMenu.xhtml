@@ -216,7 +216,7 @@
                     <p:outputLabel value="Resposta do Responsável"/>
                     <p:inputTextarea  rows="4" cols="66" 
                                       placeholder="Resposta para a requisição. "
-                                      value=""/>
+                                      />
 
                     <p:outputLabel value="Anexo"/>
                     <p:commandButton value="Arquivo em anexo" ajax="false" icon="ui-icon-arrowthick-1-s">
@@ -225,8 +225,8 @@
 
                 <br />
                 <br />
-                <p:commandButton style="align-items: center" update="tabRequerimentos"
-                                 action="#{gerencialMenuBean.finalizaRequerimento()}"
+                <p:commandButton style="align-items: center" ajax="false"
+                                 action="#{gerencialMenuBean.finalizaRequerimento}"
                                  value="Finalizar Requerimento" />
             </h:form>
         </p:dialog>

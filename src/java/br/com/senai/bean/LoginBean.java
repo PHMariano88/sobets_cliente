@@ -9,6 +9,8 @@ import br.com.senai.util.FacesUtil;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
@@ -18,12 +20,12 @@ import java.io.Serializable;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    private final String[] arraySetor = {"PEDAGOGIA", "SECRETARIA", "FINANCEIRO"};
+    private String[] arraySetor;
     private String setor;
     private String nomeLogin;
 
     public LoginBean() {
-
+       arraySetor = new String[]{"PEDAGOGIA", "SECRETARIA", "FINANCEIRO"};
     }
 
     public String[] getArraySetor() {
