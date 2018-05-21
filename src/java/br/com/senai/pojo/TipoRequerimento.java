@@ -27,11 +27,6 @@ public class TipoRequerimento implements Serializable {
     private List<Requerimento> listaRequerimento;
 
     @Override
-    public String toString() {
-        return descricaoTipoRequerimento;
-    }
-
-    @Override
     public int hashCode() {
         int hash = 7;
         hash = 53 * hash + this.codigoTipoRequerimento;

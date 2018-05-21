@@ -71,7 +71,7 @@
                             <f:selectItem itemLabel="Selecione o Tipo de Requerimento..." />
                             <f:selectItems value="#{requerimentoBean.listaRequerimento}" 
                                            var="lista" 
-                                           itemLabel="#{lista}"
+                                           itemLabel="#{lista.descricaoTipoSolicitacao}"
                                            itemValue="#{lista}"/>
                            <!-- <p:ajax event="change" update="uploadArquivo" 
                                      listener="#{requerimentoBean.habilitarUploadArquivo}" /> -->

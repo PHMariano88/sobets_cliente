@@ -5,7 +5,6 @@
  */
 package br.com.senai.converter;
 
-import br.com.senai.dao.TipoRequerimentoDAO;
 import br.com.senai.pojo.TipoRequerimento;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -19,22 +18,29 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(value = "simpleConverterTipoRequerimento")
 public class TipoRequerimentoConverter implements Converter {
 
-    TipoRequerimentoDAO tipoDAO = new TipoRequerimentoDAO();
-
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        TipoRequerimento tipo = new TipoRequerimento();
+
         if (value != null && !"".equals(value)) {
-            tipo = tipoDAO.buscaTipoRequerimentoByDescricao(value);
-           
+            return (TipoRequerimento) component.getAttributes().get(value);
         }
 
-        return tipo;
+        return null;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
 
-        return value == null ? "" : value.toString();
+        if (value instanceof TipoRequerimento) {
+            TipoRequerimento entity = (TipoRequerimento) value;
+            if ((entity instanceof TipoRequerimento)
+                    && (entity.getDescricaoTipoSolicitacao() != null)) {
+                 component.getAttributes().put(String.valueOf(entity.getCodigoTipoSolicitacao()), entity);
+                return String.valueOf(entity.getCodigoTipoSolicitacao());
+            }
+
+        }
+
+        return "";
     }
 }

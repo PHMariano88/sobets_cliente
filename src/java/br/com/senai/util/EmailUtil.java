@@ -17,10 +17,10 @@ import org.apache.commons.mail.SimpleEmail;
  */
 public class EmailUtil {
 
-    private static final String HOSTNAME = "smtp.live.com";
-    private static final String USERNAME = "paulenrique001@hotmail.com";
-    private static final String PASSWORD = "deabreu88";
-    private static final String REMETENTE = "paulenrique001@hotmail.com";
+    private static final String HOSTNAME = "smtp.gmail.com";
+    private static final String USERNAME = "requerimentosenai@gmail.com";
+    private static final String PASSWORD = "senai123";
+    private static final String REMETENTE = "requerimentosenai@gmail.com";
 
     private static Email conectEmail() throws EmailException {
 
@@ -30,7 +30,7 @@ public class EmailUtil {
         email.setStartTLSEnabled(true);
        // email.setSSLOnConnect(true);
         email.setTLS(true);
-        email.setSmtpPort(465);
+        email.setSmtpPort(587);
         
         email.setAuthentication(USERNAME, PASSWORD);
        
