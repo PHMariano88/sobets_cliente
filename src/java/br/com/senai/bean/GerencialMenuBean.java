@@ -5,6 +5,7 @@
  */
 package br.com.senai.bean;
 
+import br.com.senai.dao.EnvioEmail;
 import br.com.senai.dao.RequerimentoDAO;
 import br.com.senai.pojo.Requerimento;
 import br.com.senai.util.FacesUtil;
@@ -12,10 +13,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.Application;
-import javax.faces.application.ViewHandler;
-import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIViewRoot;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import org.hibernate.HibernateException;
@@ -79,10 +76,12 @@ public class GerencialMenuBean implements Serializable {
     }
 
     public void analisaRequerimento() {
+        EnvioEmail email = new EnvioEmail();
         try {
             requerimentoSelecionado.setStatus("ANALISE");
             requerimentoSelecionado.setResponsavel(FacesUtil.getApplicationMapValue("paramNome").toString());
             reqDao.updateRequerimento(requerimentoSelecionado);
+            email.enviaEmail(requerimentoSelecionado);
             mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Atendimento realizado com sucesso",
                     "O Requerimento está em analise. Por favor confira a aba Em Análise.");
         } catch (HibernateException ex) {
@@ -94,12 +93,14 @@ public class GerencialMenuBean implements Serializable {
     public void finalizaRequerimento() {
 
         try {
+            EnvioEmail email = new EnvioEmail();
             requerimentoSelecionado.setStatus("FINALIZADO");
             requerimentoSelecionado.setResponsavel(FacesUtil.getApplicationMapValue("paramNome").toString());
             reqDao.updateRequerimento(requerimentoSelecionado);
+            email.enviaEmail(requerimentoSelecionado);
             mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Atendimento finalizado com sucesso.",
                     "O atendimento a este requerimento foi finalizado com sucesso."
-                            + " Os detalhes deste requerimento podem ser vistos na aba finalizados.");
+                    + " Os detalhes deste requerimento podem ser vistos na aba finalizados.");
         } catch (HibernateException ex) {
             mensagem.constroiMensagemErro(FacesContext.getCurrentInstance(), "Erro",
                     "Tente novamente. Se o erro persistir contate o administrador do sistema!" + ex);

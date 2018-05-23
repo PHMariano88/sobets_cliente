@@ -78,8 +78,7 @@ public class RequerimentoBean {
         try {
             RequerimentoDAO requerimentoDao = new RequerimentoDAO();
             ArquivoAnexo arquivoAnexo = new ArquivoAnexo();
-            EnvioEmail email = new EnvioEmail();
-            
+            EnvioEmail email = new EnvioEmail();         
             converteCPF();
             if (validaEmail()) {
                 this.requerimento.setCpfRequerente(this.requerente);
@@ -94,7 +93,7 @@ public class RequerimentoBean {
                 mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Sucesso",
                         "Requerimento realizado com sucesso, por favor fique atento ao seu email. Em breve "
                         + "entraremos em contato com você por ele.");
-                email.enviaEmail(this.requerente);
+                email.enviaEmail(this.requerimento);
                 limpaCampos();
             }
         } catch (IOException | HibernateException ex) {

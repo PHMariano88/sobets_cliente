@@ -7,6 +7,7 @@ package br.com.senai.dao;
 
 import br.com.senai.pojo.MensagemEmail;
 import br.com.senai.pojo.Requerente;
+import br.com.senai.pojo.Requerimento;
 import br.com.senai.util.EmailUtil;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -18,14 +19,14 @@ import org.apache.commons.mail.EmailException;
  */
 public class EnvioEmail {
     
-    public void enviaEmail(Requerente requerente) {
+    public void enviaEmail(Requerimento requerimento) {
 
         try {
             MensagemEmail mensEmail = new MensagemEmail();
             mensEmail.setTitulo("Requerimento SESI SENAI");
-            mensEmail.setMensagem("Prezado " + requerente.getNomeRequerente() + ", recebemos"
-                    + " seu requerimento. Em breve entraremos em contato.");
-            mensEmail.setDestino(requerente.getEmail());
+            mensEmail.setMensagem("Prezado " + requerimento.getCpfRequerente().getNomeRequerente() + ", o status"
+                    + " do seu requerimento é. Em breve entraremos em contato.");
+            mensEmail.setDestino(requerimento.getCpfRequerente().getEmail());
 
             EmailUtil.enviaEmail(mensEmail);
             System.out.println("Sucesso");
