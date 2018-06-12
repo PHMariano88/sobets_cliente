@@ -9,13 +9,15 @@ import br.com.senai.util.FacesUtil;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Paulo
  */
 @Named(value = "loginBean")
-@SessionScoped
+@RequestScoped
 public class LoginBean implements Serializable {
 
     private final String[] arraySetor = {"PEDAGOGIA", "SECRETARIA", "FINANCEIRO"};

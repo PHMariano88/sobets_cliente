@@ -12,17 +12,18 @@ import br.com.senai.util.FacesUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import org.hibernate.HibernateException;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
  * @author Paulo
  */
 @Named(value = "gerencialMenuBean")
-@SessionScoped
+@ViewScoped
 public class GerencialMenuBean implements Serializable {
 
     private List<Requerimento> listaRequerimentoRecebido;
@@ -30,7 +31,9 @@ public class GerencialMenuBean implements Serializable {
     private List<Requerimento> listaRequerimentoFinalizado;
     private RequerimentoDAO reqDao;
     private Requerimento requerimentoSelecionado;
+    private String respostaResponsavel;
     private MensagemFacesMensage mensagem;
+    private UploadedFile uploadFile;
 
     public GerencialMenuBean() {
         reqDao = new RequerimentoDAO();
@@ -81,9 +84,10 @@ public class GerencialMenuBean implements Serializable {
             requerimentoSelecionado.setStatus("ANALISE");
             requerimentoSelecionado.setResponsavel(FacesUtil.getApplicationMapValue("paramNome").toString());
             reqDao.updateRequerimento(requerimentoSelecionado);
-            email.enviaEmail(requerimentoSelecionado);
+            email.enviaEmail(requerimentoSelecionado, respostaResponsavel, null);
             mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Atendimento realizado com sucesso",
                     "O Requerimento está em analise. Por favor confira a aba Em Análise.");
+            init();
         } catch (HibernateException ex) {
             mensagem.constroiMensagemErro(FacesContext.getCurrentInstance(), "Erro",
                     "Tente novamente. Se o erro persistir contate o administrador do sistema!" + ex);
@@ -97,10 +101,11 @@ public class GerencialMenuBean implements Serializable {
             requerimentoSelecionado.setStatus("FINALIZADO");
             requerimentoSelecionado.setResponsavel(FacesUtil.getApplicationMapValue("paramNome").toString());
             reqDao.updateRequerimento(requerimentoSelecionado);
-            email.enviaEmail(requerimentoSelecionado);
+            email.enviaEmail(requerimentoSelecionado, respostaResponsavel, uploadFile);
             mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Atendimento finalizado com sucesso.",
                     "O atendimento a este requerimento foi finalizado com sucesso."
                     + " Os detalhes deste requerimento podem ser vistos na aba finalizados.");
+            init();
         } catch (HibernateException ex) {
             mensagem.constroiMensagemErro(FacesContext.getCurrentInstance(), "Erro",
                     "Tente novamente. Se o erro persistir contate o administrador do sistema!" + ex);
@@ -110,6 +115,7 @@ public class GerencialMenuBean implements Serializable {
 
     private void inicializaTab() {
 
+    
         String setor = FacesUtil.getApplicationMapValue("paramSetor").toString();
         listaRequerimentoRecebido = reqDao.selectRequerimentoBySetor(setor,
                 "ENVIADO");
@@ -119,5 +125,23 @@ public class GerencialMenuBean implements Serializable {
         listaRequerimentoFinalizado = reqDao.selectRequerimentoBySetor(setor, "FINALIZADO");
 
     }
+
+    public String getRespostaResponsavel() {
+        return respostaResponsavel;
+    }
+
+    public void setRespostaResponsavel(String respostaResponsavel) {
+        this.respostaResponsavel = respostaResponsavel;
+    }
+
+    public UploadedFile getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(UploadedFile uploadFile) {
+        this.uploadFile = uploadFile;
+    }
+
+   
 
 }

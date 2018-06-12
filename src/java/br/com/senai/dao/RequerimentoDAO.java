@@ -47,6 +47,7 @@ public class RequerimentoDAO {
 
         try {
             sessao.beginTransaction();
+            requerimento.setDataFinalizacaoRequerimento(new Date());
             sessao.update(requerimento);
             sessao.getTransaction().commit();
         } finally {

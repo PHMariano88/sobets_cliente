@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.senai.bean;
 
 import br.com.senai.dao.ArquivoAnexo;
@@ -23,10 +19,6 @@ import javax.faces.context.FacesContext;
 import org.hibernate.HibernateException;
 import org.primefaces.model.UploadedFile;
 
-/**
- *
- * @author paule
- */
 @ManagedBean
 @RequestScoped
 public class RequerimentoBean {
@@ -93,7 +85,7 @@ public class RequerimentoBean {
                 mensagem.constroiMensagemCerto(FacesContext.getCurrentInstance(), "Sucesso",
                         "Requerimento realizado com sucesso, por favor fique atento ao seu email. Em breve "
                         + "entraremos em contato com você por ele.");
-                email.enviaEmail(this.requerimento);
+                email.enviaEmail(this.requerimento, null, null);
                 limpaCampos();
             }
         } catch (IOException | HibernateException ex) {
